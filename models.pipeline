@@ -1,0 +1,475 @@
+{
+  "doc_type": "pipeline",
+  "version": "3.0",
+  "json_schema": "http://api.dataplatform.ibm.com/schemas/common-pipeline/pipeline-flow/pipeline-flow-v3-schema.json",
+  "id": "elyra-auto-generated-pipeline",
+  "primary_pipeline": "primary",
+  "pipelines": [
+    {
+      "id": "primary",
+      "nodes": [
+        {
+          "id": "900c5457-932f-46af-9487-fd3db8cb3ab0",
+          "type": "execution_node",
+          "op": "execute-notebook-node",
+          "app_data": {
+            "component_parameters": {
+              "pipeline_parameters": [
+                "JOB_NAME",
+                "MODEL_NAME",
+                "RESUME_FROM_CHECKPOINT",
+                "NUM_WORKERS",
+                "NUM_GPU_PER_WORKER",
+                "WORKER_CPU",
+                "WORKER_MEMORY",
+                "BATCH_SIZE"
+              ],
+              "dependencies": [],
+              "include_subdirectories": false,
+              "outputs": [],
+              "env_vars": [
+                {
+                  "env_var": "HF_TOKEN",
+                  "value": "<HF_TOKEN>"
+                },
+                {
+                  "env_var": "OPENSHIFT_API_TOKEN",
+                  "value": "<OPENSHIFT_API_TOKEN>"
+                },
+                {
+                  "env_var": "TENSORBOARD_PROXY_URL"
+                },
+                {
+                  "env_var": "NB_PREFIX"
+                }
+              ],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [
+                {
+                  "path": "/opt/app-root/src/shared",
+                  "pvc_name": "shared",
+                  "read_only": false
+                }
+              ],
+              "filename": "1-training.ipynb",
+              "runtime_image": "registry.redhat.io/rhoai/odh-pipeline-runtime-pytorch-cuda-py312-rhel9@sha256:43b6dd4808270bee42e3caf724b9e8b89dadbfac25442509a283943797a799eb",
+              "gpu": 1,
+              "gpu_vendor": "nvidia.com/gpu"
+            },
+            "label": "",
+            "ui_data": {
+              "label": "1-training.ipynb",
+              "image": "/notebook/ai-ops/notebook/static/elyra/notebook.svg",
+              "x_pos": 31,
+              "y_pos": 319,
+              "description": "Run notebook file"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              }
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "f2878e7c-5923-477d-afcd-c59baf17a4f3",
+          "type": "execution_node",
+          "op": "execute-notebook-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [],
+              "include_subdirectories": false,
+              "outputs": [],
+              "env_vars": [
+                {
+                  "env_var": "AWS_ACCESS_KEY_ID",
+                  "value": "<AWS_ACCESS_KEY_ID>"
+                },
+                {
+                  "env_var": "AWS_SECRET_ACCESS_KEY",
+                  "value": "<AWS_SECRET_ACCESS_KEY>"
+                },
+                {
+                  "env_var": "AWS_S3_ENDPOINT",
+                  "value": "http://minio-service.utilities.svc.cluster.local:9000"
+                },
+                {
+                  "env_var": "AWS_DEFAULT_REGION",
+                  "value": "None"
+                },
+                {
+                  "env_var": "AWS_S3_BUCKET",
+                  "value": "models"
+                },
+                {
+                  "env_var": "MODEL_NAME"
+                },
+                {
+                  "env_var": "TUNED_MODEL_LOCATION"
+                }
+              ],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [
+                {
+                  "path": "/opt/app-root/src/shared",
+                  "pvc_name": "shared",
+                  "read_only": false
+                }
+              ],
+              "filename": "2-upload.ipynb",
+              "runtime_image": "registry.redhat.io/rhoai/odh-pipeline-runtime-pytorch-cuda-py312-rhel9@sha256:43b6dd4808270bee42e3caf724b9e8b89dadbfac25442509a283943797a799eb"
+            },
+            "label": "",
+            "ui_data": {
+              "label": "2-upload.ipynb",
+              "image": "/notebook/ai-ops/notebook/static/elyra/notebook.svg",
+              "x_pos": 242,
+              "y_pos": 134,
+              "description": "Run notebook file"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              },
+              "links": [
+                {
+                  "id": "4f265d23-706c-4a39-8d7c-e23cb72c5022",
+                  "node_id_ref": "900c5457-932f-46af-9487-fd3db8cb3ab0",
+                  "port_id_ref": "outPort"
+                }
+              ]
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "0eca67df-f3e9-46d5-a585-1c3930aba724",
+          "type": "execution_node",
+          "op": "execute-notebook-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [],
+              "include_subdirectories": false,
+              "outputs": [],
+              "env_vars": [
+                {
+                  "env_var": "OPENSHIFT_API_TOKEN",
+                  "value": "<OPENSHIFT_API_TOKEN>.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJhaS1vcHMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoic2VjcmV0LXNhLWF1dG9tYXRpb24iLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYXV0b21hdGlvbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjVkZjgxNmM0LTQyMTQtNGIzMi1hZDM0LTFiNjQyZDE4MmI4OSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDphaS1vcHM6YXV0b21hdGlvbiJ9.wsABGsVOFn6CVDyIjTqPT5seOLOO3fStvK86xiJhTpNQ_yflFBshGmFp8ALtQIf0dsmCP0F73Ek6vM6we94yo-Z4mObI0dZPJJonUyhnKhI-zxzo6lN59PwGdtFXl15cZbB7QV0YcHRzL8_C9RxC55ofWO4J9JqLrtMIYNaq5aOAg4nczreXSOW_ueK5-j8z4t2l7x339uESAqRBp8-27GfyhSxfGU8OiOgA0ouSTDpmk5L-iAOU9UHECkPU2MFJfFuI63-E0y5cMIpCO2JicVy1urhkTy965PZv4u4Q1NJoO2N2a0BFX_RQEJmp7Ku4P-cATIoCScBDoN6E6fIJq4OecrdIga4ALeDx7Cx3o0uwmkSygGlnLASXf84oA36XgsBB9fnK9DK4C_XZ4Vd-JKDkDtkG7-B58DKc54qa0yP36DD2yi7aLVDT2kmkTtvbj8_BS6IkPqU2zIEpj6hhr0mwEvSBrNUk_ytjFJwwp9Sc0Y1CZakBCDBCpjWDaBg7I_TcNvfPBLTpCrzM6JvT9n9w3lCJff5u92cARZizp76OiO_cgDPV3PMkk2peg5qb3ltlxQUIJTxhrFUe21BHG24atqhjL5V6MJSrp4-nWfMHsxgTdfvxkPE4OpAvAsuf0F-R8Cm1s5Nbbfby41LhoMSevJAKorQC26NA07gmexA"
+                },
+                {
+                  "env_var": "MODEL_PATH"
+                },
+                {
+                  "env_var": "AWS_S3_ENDPOINT",
+                  "value": "http://minio-service.utilities.svc.cluster.local:9000"
+                },
+                {
+                  "env_var": "AWS_DEFAULT_REGION",
+                  "value": "None"
+                },
+                {
+                  "env_var": "AWS_S3_BUCKET",
+                  "value": "models"
+                },
+                {
+                  "env_var": "MODEL_REGISTRY_URL",
+                  "value": "https://model-registry-rest.apps.cluster-pppb6.pppb6.sandbox2631.opentlc.com"
+                }
+              ],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [
+                {
+                  "path": "/opt/app-root/src/shared",
+                  "pvc_name": "shared",
+                  "read_only": false
+                }
+              ],
+              "filename": "3-register.ipynb",
+              "runtime_image": "registry.redhat.io/rhoai/odh-pipeline-runtime-pytorch-cuda-py312-rhel9@sha256:43b6dd4808270bee42e3caf724b9e8b89dadbfac25442509a283943797a799eb"
+            },
+            "label": "",
+            "ui_data": {
+              "label": "3-register.ipynb",
+              "image": "/notebook/ai-ops/notebook/static/elyra/notebook.svg",
+              "x_pos": 438,
+              "y_pos": 366,
+              "description": "Run notebook file"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              },
+              "links": [
+                {
+                  "id": "3008d363-e526-4114-8117-8a19fb9b68f8",
+                  "node_id_ref": "f2878e7c-5923-477d-afcd-c59baf17a4f3",
+                  "port_id_ref": "outPort"
+                }
+              ]
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "72bde61f-aef0-45f6-b094-71798364b2c2",
+          "type": "execution_node",
+          "op": "execute-notebook-node",
+          "app_data": {
+            "component_parameters": {
+              "dependencies": [],
+              "include_subdirectories": false,
+              "outputs": [],
+              "env_vars": [
+                {
+                  "env_var": "MODEL_PATH"
+                },
+                {
+                  "env_var": "MODEL_NAME"
+                },
+                {
+                  "env_var": "MODEL_VERSION"
+                },
+                {
+                  "env_var": "OPENSHIFT_API_TOKEN",
+                  "value": "<OPENSHIFT_API_TOKEN>.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJhaS1vcHMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoic2VjcmV0LXNhLWF1dG9tYXRpb24iLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiYXV0b21hdGlvbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjVkZjgxNmM0LTQyMTQtNGIzMi1hZDM0LTFiNjQyZDE4MmI4OSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDphaS1vcHM6YXV0b21hdGlvbiJ9.wsABGsVOFn6CVDyIjTqPT5seOLOO3fStvK86xiJhTpNQ_yflFBshGmFp8ALtQIf0dsmCP0F73Ek6vM6we94yo-Z4mObI0dZPJJonUyhnKhI-zxzo6lN59PwGdtFXl15cZbB7QV0YcHRzL8_C9RxC55ofWO4J9JqLrtMIYNaq5aOAg4nczreXSOW_ueK5-j8z4t2l7x339uESAqRBp8-27GfyhSxfGU8OiOgA0ouSTDpmk5L-iAOU9UHECkPU2MFJfFuI63-E0y5cMIpCO2JicVy1urhkTy965PZv4u4Q1NJoO2N2a0BFX_RQEJmp7Ku4P-cATIoCScBDoN6E6fIJq4OecrdIga4ALeDx7Cx3o0uwmkSygGlnLASXf84oA36XgsBB9fnK9DK4C_XZ4Vd-JKDkDtkG7-B58DKc54qa0yP36DD2yi7aLVDT2kmkTtvbj8_BS6IkPqU2zIEpj6hhr0mwEvSBrNUk_ytjFJwwp9Sc0Y1CZakBCDBCpjWDaBg7I_TcNvfPBLTpCrzM6JvT9n9w3lCJff5u92cARZizp76OiO_cgDPV3PMkk2peg5qb3ltlxQUIJTxhrFUe21BHG24atqhjL5V6MJSrp4-nWfMHsxgTdfvxkPE4OpAvAsuf0F-R8Cm1s5Nbbfby41LhoMSevJAKorQC26NA07gmexA"
+                }
+              ],
+              "kubernetes_pod_annotations": [],
+              "kubernetes_pod_labels": [],
+              "kubernetes_secrets": [],
+              "kubernetes_shared_mem_size": {},
+              "kubernetes_tolerations": [],
+              "mounted_volumes": [
+                {
+                  "path": "/opt/app-root/src/shared",
+                  "pvc_name": "shared",
+                  "read_only": false
+                }
+              ],
+              "filename": "4-serving.ipynb",
+              "runtime_image": "registry.redhat.io/rhoai/odh-pipeline-runtime-pytorch-cuda-py312-rhel9@sha256:43b6dd4808270bee42e3caf724b9e8b89dadbfac25442509a283943797a799eb"
+            },
+            "label": "",
+            "ui_data": {
+              "label": "4-serving.ipynb",
+              "image": "/notebook/ai-ops/notebook/static/elyra/notebook.svg",
+              "x_pos": 647,
+              "y_pos": 157,
+              "description": "Run notebook file"
+            }
+          },
+          "inputs": [
+            {
+              "id": "inPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Input Port"
+                }
+              },
+              "links": [
+                {
+                  "id": "951e357a-ffb1-4961-a6fc-a2aea1bb502b",
+                  "node_id_ref": "0eca67df-f3e9-46d5-a585-1c3930aba724",
+                  "port_id_ref": "outPort"
+                }
+              ]
+            }
+          ],
+          "outputs": [
+            {
+              "id": "outPort",
+              "app_data": {
+                "ui_data": {
+                  "cardinality": {
+                    "min": 0,
+                    "max": -1
+                  },
+                  "label": "Output Port"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "app_data": {
+        "ui_data": {
+          "comments": []
+        },
+        "version": 8,
+        "runtime_type": "KUBEFLOW_PIPELINES",
+        "properties": {
+          "name": "models",
+          "runtime": "Data Science Pipelines",
+          "pipeline_defaults": {
+            "kubernetes_shared_mem_size": {},
+            "mounted_volumes": [],
+            "kubernetes_pod_annotations": [],
+            "kubernetes_pod_labels": [],
+            "kubernetes_tolerations": [],
+            "env_vars": [],
+            "kubernetes_secrets": []
+          },
+          "pipeline_parameters": [
+            {
+              "name": "JOB_NAME",
+              "description": "",
+              "default_value": {
+                "type": "String",
+                "value": "sft"
+              },
+              "required": true
+            },
+            {
+              "name": "MODEL_NAME",
+              "description": "",
+              "default_value": {
+                "type": "String",
+                "value": "meta-llama/Llama-3.2-1B-Instruct"
+              },
+              "required": true
+            },
+            {
+              "name": "RESUME_FROM_CHECKPOINT",
+              "description": "",
+              "default_value": {
+                "type": "Bool",
+                "value": false
+              },
+              "required": true
+            },
+            {
+              "name": "NUM_WORKERS",
+              "description": "",
+              "default_value": {
+                "type": "String",
+                "value": "1"
+              },
+              "required": true
+            },
+            {
+              "name": "NUM_GPU_PER_WORKER",
+              "description": "",
+              "default_value": {
+                "type": "String",
+                "value": "4"
+              },
+              "required": true
+            },
+            {
+              "name": "WORKER_CPU",
+              "description": "",
+              "default_value": {
+                "type": "String",
+                "value": "8"
+              },
+              "required": true
+            },
+            {
+              "name": "WORKER_MEMORY",
+              "description": "",
+              "default_value": {
+                "type": "String",
+                "value": "32"
+              },
+              "required": true
+            },
+            {
+              "name": "BATCH_SIZE",
+              "description": "",
+              "default_value": {
+                "type": "String",
+                "value": "40"
+              },
+              "required": true
+            }
+          ]
+        }
+      },
+      "runtime_ref": ""
+    }
+  ],
+  "schemas": []
+}
